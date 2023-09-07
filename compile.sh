@@ -5,6 +5,7 @@
 echo "Creating run_mpi.sh file"
 
 
+
 MPI_EXE=mpi_matrix_mult
 MPI_CODE=mpi_matrix_mult.c
 MPI_EXE_PATH="${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
@@ -42,7 +43,7 @@ NP=\$((\$NODES*\$PPN))
 
 set -x
 
-mpirun -np \$NP --oversubscribe --host \${src}:\${PPN},\${dst}:\${PPN} --map-by ppr:\${PPN}:node ${MPI_EXE_PATH}/${MPI_EXE} 100 2 v
+mpirun -np \$NP --oversubscribe --host \${src}:\${PPN},\${dst}:\${PPN} --map-by ppr:\${PPN}:node ${MPI_EXE_PATH}/${MPI_EXE} 5000 5
 #mpirun -np \$NP --oversubscribe --host \${src}:\${PPN},\${dst}:\${PPN} --map-by ppr:\${PPN}:node --mca btl tcp,vader,self --mca coll_hcoll_enable 0 --mca btl_tcp_if_include lo,eth0 --mca pml ^ucx ${MPI_EXE_PATH}/${MPI_EXE} 5000 5
 
 EOF
