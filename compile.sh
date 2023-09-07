@@ -43,7 +43,7 @@ NP=\$((\$NODES*\$PPN))
 set -x
 
 mpirun -np \$NP --oversubscribe --host \${src}:\${PPN},\${dst}:\${PPN} --map-by ppr:\${PPN}:node ${MPI_EXE_PATH}/${MPI_EXE} 100 2 v
-#mpirun -np \$NP --oversubscribe --host \${src}:\${PPN},\${dst}:\${PPN} --map-by ppr:\${PPN}:node --mca btl tcp,vader,self --mca coll_hcoll_enable 0 --mca btl_tcp_if_include lo,eth0 --mca pml ^ucx ${MPI_EXE_PATH}/${MPI_EXE} 100 2 v
+#mpirun -np \$NP --oversubscribe --host \${src}:\${PPN},\${dst}:\${PPN} --map-by ppr:\${PPN}:node --mca btl tcp,vader,self --mca coll_hcoll_enable 0 --mca btl_tcp_if_include lo,eth0 --mca pml ^ucx ${MPI_EXE_PATH}/${MPI_EXE} 5000 20
 
 EOF
 
