@@ -137,6 +137,7 @@ int main (int argc, char *argv[])
             a = rand_matrix(matrix_size, matrix_size);
             b = rand_matrix(matrix_size, matrix_size);
             startwtime = MPI_Wtime();
+            printf("starting interaction %d wall clock time = %f\n", inter, startwtime);
 
             if (verbose){
                printf("mpi_mm has started with %d tasks.\n",numtasks);
