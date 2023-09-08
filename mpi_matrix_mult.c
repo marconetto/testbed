@@ -111,7 +111,7 @@ int main (int argc, char *argv[])
     double *c = NULL;
     double *a = NULL;
     double *b = NULL;
-    double startwtime, endwtime,beginwtime;
+    double startwtime, endwtime, beginwtime, totalwtime, totalendwtime;
     int matrix_size = 0;
     int verbose = 0;
     int num_interactions = 1;
@@ -132,6 +132,7 @@ int main (int argc, char *argv[])
         if (verbose)
             printf("verbose mode active!\n");
 
+        totalstartwtime = MPI_Wtime();
         for (int inter=0 ; inter < num_interactions ; inter++){
             c = (double*)malloc(matrix_size*matrix_size*sizeof(double));
             a = rand_matrix(matrix_size, matrix_size);
@@ -175,6 +176,9 @@ int main (int argc, char *argv[])
             printf("interaction %d wall clock time = %f\n", inter, endwtime-startwtime);
             fflush(stdout);
         }
+        totalendwtime = MPI_Wtime();
+        printf("concluded all %d total wall clock time = %f\n", num_interactions, totalendwtime-totalstartwtime);
+        fflush(stdout);
     }
 
     if (taskid > MASTER) {
