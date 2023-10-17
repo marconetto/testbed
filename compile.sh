@@ -27,24 +27,30 @@ module load mpi/hpcx
 # Create host file
 batch_hosts=hosts.batch
 rm -rf $batch_hosts
-IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
 
-for i in "\${ADDR[@]}"; do echo \$i >> \$batch_hosts;done
+IFS=';' read -ra ADDR <<< "$AZ_BATCH_NODE_LIST"
 
-# Determine hosts to run on
-src=\$(tail -n1 \$batch_hosts)
-dst=\$(head -n1 \$batch_hosts)
-echo "Src: \$src"
-echo "Dst: \$dst"
+[[ ! -z $PPN ]] && echo "PPN note defined"
+PPN=$PPN
 
-NODES=2
-PPN=2
-NP=\$((\$NODES*\$PPN))
+hostprocmap=""
 
+for host in "${ADDR[@]}"; do
+    echo $i >> $batch_hosts
+    hostprocmap="$hostprocmap,$host:${PPN}"
+done
+
+hostprocmap="${hostprocmap:1}"
+
+NODES=$(cat $batch_hosts | wc -l)
+
+NP=$(($NODES*$PPN))
+
+echo "NODES=$NODES PPN=$PPN"
+echo "hostprocmap=$hostprocmap"
 set -x
 
-mpirun -np \$NP --oversubscribe --host \${src}:\${PPN},\${dst}:\${PPN} --map-by ppr:\${PPN}:node ${MPI_EXE_PATH}/${MPI_EXE} 3000 10
-#mpirun -np \$NP --oversubscribe --host \${src}:\${PPN},\${dst}:\${PPN} --map-by ppr:\${PPN}:node --mca btl tcp,vader,self --mca coll_hcoll_enable 0 --mca btl_tcp_if_include lo,eth0 --mca pml ^ucx ${MPI_EXE_PATH}/${MPI_EXE} 5000 5
+mpirun -np $NP --oversubscribe --host $hostprocmap --map-by ppr:${PPN}:node //mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult 3000 10
 
 EOF
 
