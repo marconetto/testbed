@@ -30,7 +30,7 @@ rm -rf $batch_hosts
 
 IFS=';' read -ra ADDR <<< "$AZ_BATCH_NODE_LIST"
 
-[[ ! -z $PPN ]] && echo "PPN note defined"
+[[ -z $PPN ]] && echo "PPN not defined"
 PPN=$PPN
 
 hostprocmap=""
