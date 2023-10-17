@@ -17,9 +17,9 @@ MPI_EXE=${MPI_EXE}
 MPI_CODE=${MPI_CODE}
 MPI_EXE_PATH=${MPI_EXE_PATH}
 
-if [ -f /etc/bashrc ]; then
-    . /etc/bashrc
-fi
+[[ -f /etc/bashrc ]] && . /etc/bashrc
+
+source /etc/profile.d/modules.sh
 
 module load gcc-9.2.0
 module load mpi/hpcx
@@ -50,11 +50,9 @@ EOF
 
 chmod +x run_mpi.sh
 
+[[ -f /etc/bashrc ]] && . /etc/bashrc
 
-if [ -f /etc/bashrc ]; then
-        . /etc/bashrc
-fi
-
+source /etc/profile.d/modules.sh
 module load gcc-9.2.0
 module load mpi/hpcx
 
