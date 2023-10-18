@@ -26,31 +26,31 @@ module load mpi/hpcx
 
 # Create host file
 batch_hosts=hosts.batch
-rm -rf $batch_hosts
+rm -rf \$batch_hosts
 
-IFS=';' read -ra ADDR <<< "$AZ_BATCH_NODE_LIST"
+IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
 
-[[ -z $PPN ]] && echo "PPN not defined"
-PPN=$PPN
+[[ -z \$PPN ]] && echo "PPN not defined"
+PPN=\$PPN
 
 hostprocmap=""
 
-for host in "${ADDR[@]}"; do
-    echo $i >> $batch_hosts
-    hostprocmap="$hostprocmap,$host:${PPN}"
+for host in "\${ADDR[@]}"; do
+    echo $host >> \$batch_hosts
+    hostprocmap="\$hostprocmap,\$host:\${PPN}"
 done
 
-hostprocmap="${hostprocmap:1}"
+hostprocmap="\${hostprocmap:1}"
 
-NODES=$(cat $batch_hosts | wc -l)
+NODES=\$(cat \$batch_hosts | wc -l)
 
-NP=$(($NODES*$PPN))
+NP=\$((\$NODES*\$PPN))
 
-echo "NODES=$NODES PPN=$PPN"
-echo "hostprocmap=$hostprocmap"
+echo "NODES=\$NODES PPN=\$PPN"
+echo "hostprocmap=\$hostprocmap"
 set -x
 
-mpirun -np $NP --oversubscribe --host $hostprocmap --map-by ppr:${PPN}:node //mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult 6000 10
+mpirun -np \$NP --oversubscribe --host $hostprocmap --map-by ppr:\${PPN}:node //mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult 6000 10
 
 EOF
 
