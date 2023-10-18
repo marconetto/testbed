@@ -50,7 +50,7 @@ echo "NODES=\$NODES PPN=\$PPN"
 echo "hostprocmap=\$hostprocmap"
 set -x
 
-mpirun -np \$NP --oversubscribe --host $hostprocmap --map-by ppr:\${PPN}:node //mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult 6000 10
+mpirun -np \$NP --oversubscribe --host \$hostprocmap --map-by ppr:\${PPN}:node //mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult 6000 10
 
 EOF
 
