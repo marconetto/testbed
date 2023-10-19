@@ -17,6 +17,11 @@ MPI_EXE=${MPI_EXE}
 MPI_CODE=${MPI_CODE}
 MPI_EXE_PATH=${MPI_EXE_PATH}
 
+APPINTERACTIONS=\${APPINTERACTIONS}
+APPMATRIXSIZE=\${APPMATRIXSIZE}
+[[ -z \$APPINTERACTIONS ]] && APPINTERACTIONS=10
+[[ -z \$APPMATRIXSIZE ]] && APPMATRIXSIZE=3000
+
 [[ -f /etc/bashrc ]] && . /etc/bashrc
 
 source /etc/profile.d/modules.sh
@@ -50,7 +55,7 @@ echo "NODES=\$NODES PPN=\$PPN"
 echo "hostprocmap=\$hostprocmap"
 set -x
 
-mpirun -np \$NP --oversubscribe --host \$hostprocmap --map-by ppr:\${PPN}:node //mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult 6000 10
+mpirun -np \$NP --oversubscribe --host \$hostprocmap --map-by ppr:\${PPN}:node //mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult \${APPMATRIXSIZE} \${APPINTERACTIONS}
 
 EOF
 
