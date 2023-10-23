@@ -12,7 +12,8 @@ MPI_EXE_PATH="${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
 
 CODEURL=https://raw.githubusercontent.com/marconetto/testbed/main/mpi_matrix_mult.c
 
-curl -sL $CODEURL -o /nfs/$MPI_CODE
+echo "MPI_EXE_PATH=$MPI_EXE_PATH"
+curl -sL $CODEURL -o $MPI_EXE_PATH/$MPI_CODE
 
 
 
