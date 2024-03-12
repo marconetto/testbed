@@ -62,7 +62,7 @@ echo "hostprocmap=\$hostprocmap"
 set -x
 
 echo "Running WRF with \$NP processes ..."
-#mpirun -np \$NP --oversubscribe --host \$hostprocmap --map-by ppr:\${PPN}:node //mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult \${APPMATRIXSIZE} \${APPINTERACTIONS}
+mpirun -np \$NP --host \$hostprocmap wrf.exe
 
 EOF
   chmod +x run_mpi.sh
