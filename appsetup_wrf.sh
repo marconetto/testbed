@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+set -x
+
+MPI_EXE_PATH="${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
+MPI_EXE=wrf.exe
+#MPI_CODE=mpi_matrix_mult.c
+echo "MPI_EXE_PATH=$MPI_EXE_PATH"
+
+function setup_data {
+  if [[ -d v4.4_bench_conus12km/ ]]; then
+    echo "Data already exists"
+    return
+  fi
+  curl -O https://www2.mmm.ucar.edu/wrf/users/benchmark/v44/v4.4_bench_conus12km.tar.gz
+  tar zxvf v4.4_bench_conus12km.tar.gz
+}
+
+function generate_run_script {
+
+  cat <<EOF >run_mpi.sh
+#!/bin/bash
+
+source /cvmfs/software.eessi.io/versions/2023.06/init/bash
+module load WRF/4.4.1-foss-2022b-dmpar
+module load mpi/openmpi-4.1.5
+
+cd \$MPI_EXE_PATH
+execdir="run_\$((RANDOM % 90000 + 10000))"
+mkdir -p \$execdir
+cd \$execdir || exit
+echo "Execution directory: \$execdir"
+
+wrfrundir=\$(which wrf.exe | sed 's/\/main\/wrf.exe/\/run\//')
+ln -s "\$wrfrundir"/* .
+ln -sf ../v4.4_bench_conus12km/* .
+
+# Create host file
+batch_hosts=hosts.batch
+rm -rf \$batch_hosts
+
+IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
+
+[[ -z \$PPN ]] && echo "PPN not defined"
+PPN=\$PPN
+
+hostprocmap=""
+
+for host in "\${ADDR[@]}"; do
+    echo \$host >> \$batch_hosts
+    hostprocmap="\$hostprocmap,\$host:\${PPN}"
+done
+
+hostprocmap="\${hostprocmap:1}"
+
+NODES=\$(cat \$batch_hosts | wc -l)
+
+NP=\$((\$NODES*\$PPN))
+
+echo "NODES=\$NODES PPN=\$PPN"
+echo "hostprocmap=\$hostprocmap"
+set -x
+
+echo "Running WRF with \$NP processes ..."
+#mpirun -np \$NP --oversubscribe --host \$hostprocmap --map-by ppr:\${PPN}:node //mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult \${APPMATRIXSIZE} \${APPINTERACTIONS}
+
+EOF
+  chmod +x run_mpi.sh
+}
+
+cd "$MPI_EXE_PATH" || exit
+setup_data
+generate_run_script
