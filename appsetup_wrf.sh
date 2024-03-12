@@ -26,6 +26,9 @@ module load WRF/4.4.1-foss-2022b-dmpar
 #module load mpi/openmpi
 module load OpenMPI/4.1.6-GCC-13.2.0
 
+which wrf.exe
+which mpirun
+
 cd \$MPI_EXE_PATH
 execdir="run_\$((RANDOM % 90000 + 10000))"
 mkdir -p \$execdir
