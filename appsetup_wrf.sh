@@ -21,12 +21,14 @@ function generate_run_script {
   cat <<EOF >run_mpi.sh
 #!/bin/bash
 
+MPI_EXE_PATH="\${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
 
+set -x
 IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
 
-for host in "\${ADDR[@]}"; do
-    ssh \$host 'sudo mount -t cvmfs software.eessi.io /cvmfs/software.eessi.io'
-done
+#for host in "\${ADDR[@]}"; do
+#    ssh \$host 'sudo mount -t cvmfs software.eessi.io /cvmfs/software.eessi.io'
+#done
 
 
 
@@ -39,8 +41,9 @@ which wrf.exe
 which mpirun
 
 echo "MPI_EXE_PATH=\$MPI_EXE_PATH"
-
+pwd
 cd \$MPI_EXE_PATH
+pwd
 execdir="run_\$((RANDOM % 90000 + 10000))"
 mkdir -p \$execdir
 cd \$execdir || exit
@@ -76,8 +79,9 @@ echo "NODES=\$NODES PPN=\$PPN"
 echo "hostprocmap=\$hostprocmap"
 set -x
 
+APP_EXE=\$(which wrf.exe)
 echo "Running WRF with \$NP processes ..."
-mpirun -np \$NP --host \$hostprocmap wrf.exe
+mpirun -np \$NP --host \$hostprocmap \$APP_EXE
 
 EOF
   chmod +x run_mpi.sh
