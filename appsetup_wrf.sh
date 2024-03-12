@@ -12,7 +12,7 @@ function setup_data {
     echo "Data already exists"
     return
   fi
-  curl -O https://www2.mmm.ucar.edu/wrf/users/benchmark/v44/v4.4_bench_conus12km.tar.gz
+  curl -k -O https://www2.mmm.ucar.edu/wrf/users/benchmark/v44/v4.4_bench_conus12km.tar.gz
   tar zxvf v4.4_bench_conus12km.tar.gz
 }
 
