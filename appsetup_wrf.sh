@@ -23,7 +23,8 @@ function generate_run_script {
 
 source /cvmfs/software.eessi.io/versions/2023.06/init/bash
 module load WRF/4.4.1-foss-2022b-dmpar
-module load mpi/openmpi
+#module load mpi/openmpi
+module load OpenMPI/4.1.6-GCC-13.2.0
 
 cd \$MPI_EXE_PATH
 execdir="run_\$((RANDOM % 90000 + 10000))"
