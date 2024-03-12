@@ -21,6 +21,15 @@ function generate_run_script {
   cat <<EOF >run_mpi.sh
 #!/bin/bash
 
+
+IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
+
+for host in "\${ADDR[@]}"; do
+    ssh \$host 'sudo mount -t cvmfs software.eessi.io /cvmfs/software.eessi.io'
+done
+
+
+
 source /cvmfs/software.eessi.io/versions/2023.06/init/bash
 module load WRF/4.4.1-foss-2022b-dmpar
 #module load mpi/openmpi
