@@ -29,6 +29,8 @@ module load OpenMPI/4.1.6-GCC-13.2.0
 which wrf.exe
 which mpirun
 
+echo "MPI_EXE_PATH=\$MPI_EXE_PATH"
+
 cd \$MPI_EXE_PATH
 execdir="run_\$((RANDOM % 90000 + 10000))"
 mkdir -p \$execdir
