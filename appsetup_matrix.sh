@@ -62,6 +62,9 @@ echo "NODES=\$NODES PPN=\$PPN"
 echo "hostprocmap=\$hostprocmap"
 set -x
 
+echo "=========VARIABLES======="
+set
+echo "========================="
 mpirun -np \$NP --oversubscribe --host \$hostprocmap --map-by ppr:\${PPN}:node //mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult \${APPMATRIXSIZE} \${APPINTERACTIONS}
 
 EOF
