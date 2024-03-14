@@ -81,7 +81,15 @@ set -x
 
 APP_EXE=\$(which wrf.exe)
 echo "Running WRF with \$NP processes ..."
-mpirun -np \$NP --host \$hostprocmap \$APP_EXE
+time mpirun -np \$NP --host \$hostprocmap \$APP_EXE
+
+echo "WRF run completed... confirming"
+
+if [[ $(grep "SUCCESS COMPLETE WRF" rsl.error.0000) ]]; then
+  echo "WRF run completed successfully"
+else
+  echo "WRF run failed"
+fi
 
 EOF
   chmod +x run_mpi.sh
