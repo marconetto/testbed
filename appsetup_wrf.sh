@@ -85,6 +85,7 @@ time mpirun -np \$NP --host \$hostprocmap \$APP_EXE
 
 echo "WRF run completed... confirming"
 
+cat rsl.error.0000
 if [[ $(grep "SUCCESS COMPLETE WRF" rsl.error.0000) ]]; then
   echo "WRF run completed successfully"
   exit 0
