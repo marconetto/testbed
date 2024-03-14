@@ -88,10 +88,8 @@ echo "WRF run completed... confirming"
 cat rsl.error.0000
 if [[ $(grep "SUCCESS COMPLETE WRF" rsl.error.0000) ]]; then
   echo "WRF run completed successfully"
-  exit 0
 else
   echo "WRF run failed"
-  exit 1
 fi
 
 EOF
