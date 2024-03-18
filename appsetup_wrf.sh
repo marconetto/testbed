@@ -18,7 +18,7 @@ function setup_data {
 
 function generate_run_script {
 
-  cat <<EOF >run_mpi.sh
+  cat <<EOF >run_app.sh
 #!/bin/bash
 
 MPI_EXE_PATH="\${AZ_BATCH_NODE_MOUNTS_DIR}/data/"

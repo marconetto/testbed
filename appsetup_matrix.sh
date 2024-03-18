@@ -4,8 +4,6 @@
 
 echo "Creating run_mpi.sh file"
 
-
-
 MPI_EXE=mpi_matrix_mult
 MPI_CODE=mpi_matrix_mult.c
 MPI_EXE_PATH="${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
@@ -13,11 +11,9 @@ MPI_EXE_PATH="${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
 CODEURL=https://raw.githubusercontent.com/marconetto/testbed/main/mpi_matrix_mult.c
 
 echo "MPI_EXE_PATH=$MPI_EXE_PATH"
-curl -sL $CODEURL -o $MPI_EXE_PATH/$MPI_CODE
+curl -sL $CODEURL -o "$MPI_EXE_PATH"/$MPI_CODE
 
-
-
-cat << EOF > run_mpi.sh
+cat <<EOF >run_app.sh
 #!/bin/bash
 
 MPI_EXE=${MPI_EXE}
