@@ -81,6 +81,7 @@ set -x
 
 APP_EXE=\$(which wrf.exe)
 echo "Running WRF with \$NP processes ..."
+export UCX_NET_DEVICES=mlx5_ib0:1
 time mpirun -np \$NP --host \$hostprocmap \$APP_EXE
 
 echo "WRF run completed... confirming"
