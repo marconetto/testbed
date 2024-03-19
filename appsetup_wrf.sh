@@ -96,7 +96,7 @@ else
 fi
 
 EOF
-  chmod +x run_mpi.sh
+  chmod +x run_app.sh
 }
 
 cd "$MPI_EXE_PATH" || exit
