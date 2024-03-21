@@ -61,7 +61,6 @@ IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
 
 [[ -z \$PPN ]] && echo "PPN not defined"
 PPN=\$PPN
-PPN=200
 
 hostprocmap=""
 
