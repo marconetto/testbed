@@ -26,7 +26,8 @@ MPI_EXE_PATH="\${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
 set -x
 IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
 
-source /cvmfs/software.eessi.io/versions/2023.06/init/bash
+source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
+#source /cvmfs/software.eessi.io/versions/2023.06/init/bash
 module load GROMACS
 module load OpenMPI/4.1.6-GCC-13.2.0
 
