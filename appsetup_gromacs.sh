@@ -43,7 +43,7 @@ mkdir -p \$execdir
 cd \$execdir || exit
 echo "Execution directory: \$execdir"
 
-ln -s "\$HOME/GROMACS_TestCaseA/ion_channel.tpr" .
+ln -s "\$MPI_EXE_PATH/GROMACS_TestCaseA/ion_channel.tpr" .
 
 # Create host file
 batch_hosts=hosts.batch
