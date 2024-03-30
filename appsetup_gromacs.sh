@@ -74,18 +74,20 @@ set -x
 APP_EXE=\$(which gmx_mpi)
 echo "Running GROMACS with \$NP processes ..."
 export UCX_NET_DEVICES=mlx5_ib0:1
-#time mpirun -np \$NP --host \$hostprocmap \$APP_EXE
+time mpirun -np \$NP --host \$hostprocmap gmx_mpi mdrun \
+    -s ion_channel.tpr \
+    -cpt 1000 \
+    -maxh 1.0 \
+    -nsteps 5000 \
+    -ntomp \$OMP_NUM_THREADS
 
-#echo "WRF run completed... confirming"
-
-#cat rsl.error.0000
-#if [[ \$(grep "SUCCESS COMPLETE WRF" rsl.error.0000) ]]; then
-#  echo "WRF run completed successfully"
-#  exit 0
-#else
-#  echo "WRF run failed"
-#  exit 1
-#fi
+if [ -f md.log && $(grep -q "Finished mdrun" md.log) ]; then
+    echo "GROMACS run completed successfully"
+    exit 0
+else
+    echo "GROMACS run failed"
+    exit 1
+fi
 
 EOF
   chmod +x run_app.sh
