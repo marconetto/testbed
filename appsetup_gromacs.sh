@@ -47,6 +47,8 @@ mkdir -p \$execdir
 cd \$execdir || exit
 echo "Execution directory: \$execdir"
 
+pwd
+ls -l "\$MPI_EXE_PATH/"
 ln -s "\$MPI_EXE_PATH/GROMACS_TestCaseA/ion_channel.tpr" .
 ls -l ion_channel.tpr
 
