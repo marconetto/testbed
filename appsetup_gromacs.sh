@@ -82,7 +82,7 @@ APP_EXE=\$(which gmx_mpi)
 echo "Running GROMACS with \$NP processes ..."
 export UCX_NET_DEVICES=mlx5_ib0:1
 
-OMP_NUM_THREADS=\$PPN
+export OMP_NUM_THREADS=\$PPN
 
 time mpirun -np \$NP --host \$hostprocmap \$APP_EXE mdrun \
     -s ion_channel.tpr \
