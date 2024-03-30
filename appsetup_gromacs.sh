@@ -89,7 +89,7 @@ time mpirun -np \$NP --host \$hostprocmap \$APP_EXE mdrun \
     -s ion_channel.tpr \
     -cpt 1000 \
     -maxh 1.0 \
-    -nsteps 5000 \
+    -nsteps 15000 \
     -ntomp \$OMP_NUM_THREADS
 
 if [[ -f md.log && \$(grep "Finished mdrun" md.log) ]]; then
