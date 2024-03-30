@@ -74,14 +74,14 @@ set -x
 APP_EXE=\$(which gmx_mpi)
 echo "Running GROMACS with \$NP processes ..."
 export UCX_NET_DEVICES=mlx5_ib0:1
-time mpirun -np \$NP --host \$hostprocmap gmx_mpi mdrun \
+time mpirun -np \$NP --host \$hostprocmap \$APP_EXE mdrun \
     -s ion_channel.tpr \
     -cpt 1000 \
     -maxh 1.0 \
     -nsteps 5000 \
     -ntomp \$OMP_NUM_THREADS
 
-if [ -f md.log && \$(grep -q "Finished mdrun" md.log) ]; then
+if [ -f md.log && \$(grep "Finished mdrun" md.log) ]; then
     echo "GROMACS run completed successfully"
     exit 0
 else
