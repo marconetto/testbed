@@ -8,8 +8,12 @@ MPI_EXE=gmx_mpi
 echo "MPI_EXE_PATH=$MPI_EXE_PATH"
 
 function setup_data {
+  echo "Setting up data ..."
+  pwd
+
   if [[ -d GROMACS_TestCaseA ]]; then
     echo "Data already exists"
+    ls -l GROMACS_TestCaseA
     return
   fi
   wget https://repository.prace-ri.eu/ueabs/GROMACS/2.2/GROMACS_TestCaseA.tar.xz
@@ -29,7 +33,7 @@ IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
 source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
 #source /cvmfs/software.eessi.io/versions/2023.06/init/bash
 module load GROMACS
-module load OpenMPI/4.1.6-GCC-13.2.0
+module load OpenMPI
 
 which gmx_mpi
 which mpirun
@@ -44,6 +48,7 @@ cd \$execdir || exit
 echo "Execution directory: \$execdir"
 
 ln -s "\$MPI_EXE_PATH/GROMACS_TestCaseA/ion_channel.tpr" .
+ls -l ion_channel.tpr
 
 # Create host file
 batch_hosts=hosts.batch
