@@ -27,7 +27,6 @@ function generate_run_script {
 
 MPI_EXE_PATH="\${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
 
-set -x
 IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
 
 source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
@@ -35,6 +34,7 @@ source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
 module load GROMACS
 module load OpenMPI
 
+set -x
 which gmx_mpi
 which mpirun
 
@@ -76,13 +76,14 @@ NP=\$((\$NODES*\$PPN))
 
 echo "NODES=\$NODES PPN=\$PPN"
 echo "hostprocmap=\$hostprocmap"
-set -x
 
 APP_EXE=\$(which gmx_mpi)
 echo "Running GROMACS with \$NP processes ..."
 export UCX_NET_DEVICES=mlx5_ib0:1
 
-export OMP_NUM_THREADS=\$PPN
+export OMP_NUM_THREADS=1
+#export OMP_NUM_THREADS=\$PPN
+export OMPI_MCA_pml=ucx
 
 time mpirun -np \$NP --host \$hostprocmap \$APP_EXE mdrun \
     -s ion_channel.tpr \
@@ -91,7 +92,7 @@ time mpirun -np \$NP --host \$hostprocmap \$APP_EXE mdrun \
     -nsteps 5000 \
     -ntomp \$OMP_NUM_THREADS
 
-if [ -f md.log && \$(grep "Finished mdrun" md.log) ]; then
+if [[ -f md.log && \$(grep "Finished mdrun" md.log) ]]; then
     echo "GROMACS run completed successfully"
     exit 0
 else
