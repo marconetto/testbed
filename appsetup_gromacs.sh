@@ -81,7 +81,7 @@ time mpirun -np \$NP --host \$hostprocmap gmx_mpi mdrun \
     -nsteps 5000 \
     -ntomp \$OMP_NUM_THREADS
 
-if [ -f md.log && $(grep -q "Finished mdrun" md.log) ]; then
+if [ -f md.log && \$(grep -q "Finished mdrun" md.log) ]; then
     echo "GROMACS run completed successfully"
     exit 0
 else
