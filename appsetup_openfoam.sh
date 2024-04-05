@@ -6,7 +6,7 @@ APP_EXE_PATH="${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
 echo "APP_EXE_PATH=$APP_EXE_PATH"
 
 function setup_data {
-  echo "data will be used from openfoam instalation"
+  echo "data will be used from openfoam installation"
   echo "nothing to be done"
   pwd
 }
@@ -23,7 +23,7 @@ IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
 #source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
 source /cvmfs/software.eessi.io/versions/2023.06/init/bash
 module load OpenFOAM
-source "$FOAM_BASH"
+source "\$FOAM_BASH"
 
 set -x
 which mpirun
@@ -35,10 +35,8 @@ cd \$APP_EXE_PATH
 pwd
 execdir="run_\$((RANDOM % 90000 + 10000))"
 
-sudo cp -r "$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike \$execdir
-
-sudo chown -R \$(id -u):\$(id -g) \$execdir
-sudo chmod -R 777 \$execdir
+cp -r "$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike \$execdir
+chmod -R u+w \$execdir
 cd \$execdir || exit
 echo "Execution directory: \$execdir"
 
