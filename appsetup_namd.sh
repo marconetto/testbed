@@ -80,7 +80,7 @@ APP_EXE=\$(which namd3)
 
 
 ########################### APP EXECUTION #####################################
-cp \$APP_EXE_PATH/stvm/* .
+cp \$APP_EXE_PATH/stmv/* .
 ls -l
 time charmrun namd3 ++p \$NP ++nodelist \$batch_hosts +setcpuaffinity stmv.namd
 #############################################################################
