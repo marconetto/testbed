@@ -78,11 +78,13 @@ echo "hostprocmap=\$hostprocmap"
 
 APP_EXE=\$(which namd3)
 
+echo "APP_EXE=\$APP_EXE"
+
 
 ########################### APP EXECUTION #####################################
 cp \$APP_EXE_PATH/stmv/* .
 ls -l
-time charmrun namd3 ++p \$NP ++nodelist \$batch_hosts +setcpuaffinity stmv.namd
+time charmrun \$APP_EXE ++p \$NP ++nodelist \$batch_hosts +setcpuaffinity stmv.namd
 #############################################################################
 
 
