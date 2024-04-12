@@ -16,11 +16,12 @@ function setup_data {
     wget "$namdurl"
     namdtgz=$(basename $namdurl)
     tar zxvf "$namdtgz"
-    caseurl=https://www.ks.uiuc.edu/Research/namd/3.0b6/download/120834/NAMD_3.0b6_Linux-x86_64-verbs-smp.tar.gz
-    wget "$casetgz"
+    caseurl=https://www.ks.uiuc.edu/Research/namd/utilities/stmv.tar.gz
+    wget "$caseurl"
     casetgz=$(basename $caseurl)
     tar zxvf "$casetgz"
-    sed -i 's| .*stmv-output|./stmv-output|g' stmv/stmv.namd
+    sed -i 's| .*stmv-output| ./stmv-output|g' stmv/stmv.namd
+    sed -i 's|numsteps.*|numsteps 5000|g' stmv/stmv.namd
   else
     echo "nothing to be done. App and data all ready"
   fi
@@ -79,7 +80,7 @@ APP_EXE=\$(which namd3)
 
 
 ########################### APP EXECUTION #####################################
-cp \$namddir/stvm/* .
+cp \$APP_EXE_PATH/stvm/* .
 ls -l
 time charmrun namd3 ++p \$NP ++nodelist \$batch_hosts +setcpuaffinity stmv.namd
 #############################################################################
