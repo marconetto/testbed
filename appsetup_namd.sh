@@ -60,7 +60,7 @@ rm -rf \$batch_hosts
 
 hostprocmap=""
 for host in "\${ADDR[@]}"; do
-    echo "host \$host ++cpus \$PPN >> \$batch_hosts
+    echo "host \$host ++cpus \$PPN" >> \$batch_hosts
     hostprocmap="\$hostprocmap,\$host:\${PPN}"
 done
 
