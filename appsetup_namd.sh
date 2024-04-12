@@ -89,9 +89,15 @@ time charmrun \$APP_EXE ++p \$NP ++nodelist \$batch_hosts +setcpuaffinity stmv.n
 
 
 ########################### TEST OUTPUT #####################################
-echo "need to check output files"
-ls -l
-exit 0
+OUTPUTFILE=stmv-output.coor
+
+if [ -f "\$OUTPUTFILE" ]; then
+    echo "Output file found: \$OUTPUTFILE"
+    exit 0
+else
+    echo "Output file not found: \$OUTPUTFILE"
+    exit 1
+fi
 #############################################################################
 
 EOF
