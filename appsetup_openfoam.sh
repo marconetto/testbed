@@ -83,6 +83,7 @@ export OMPI_MCA_pml=ucx
 sed -i '/RunFunctions/a source <(declare -f runParallel | sed "s/mpirun/mpirun \\\\\\\$FOAM_MPIRUN_FLAGS/g")' Allrun
 
 sed -i 's#/bin/sh#/bin/bash#g' Allrun
+sed -i '/decomposePar/a declare -f runParallel' Allrun
 
 export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --verbose"
 #export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --report-bindings --verbose"
