@@ -84,16 +84,11 @@ sed -i '/RunFunctions/a source <(declare -f runParallel | sed "s/mpirun/mpirun \
 
 sed -i 's#/bin/sh#/bin/bash#g' Allrun
 sed -i '/bash/a set -x' Allrun
-sed -i '/decomposePar/a declare -f runParallel' Allrun
-
-#export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts $(env | grep 'WM_\|FOAM' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x MPI_BUFFER_SIZE --report-bindings --map-by ppr:${ranks_per_numa}:numa"
 
 
 #export FOAM_MPIRUN_FLAGS="-mca pml ucx $(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n -x PATH -x LD_LIBRARY_PATH --oversubscribe"
 
-export FOAM_MPIRUN_FLAGS="-host 10.39.0.10:120,10.39.0.11:120 \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n"
-# export FOAM_MPIRUN_FLAGS="-hostfile hostfile"
-#export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --report-bindings --verbose"
+export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n --report-bindings --verbose --map-by core --bind-to core "
 echo \$FOAM_MPIRUN_FLAGS
 
 ########################### APP EXECUTION #####################################
@@ -121,7 +116,7 @@ time ./Allrun
 LOGFILE="log.foamRun"
 if [[ -f \$LOGFILE && \$(tail -n 1 "\$LOGFILE") == 'Finalising parallel run' ]]; then
   echo "Simulation completed"
-  reconstructPar -constant
+#  reconstructPar -constant
   touch case.foam
   exit 0
 else
