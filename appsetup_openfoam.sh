@@ -85,7 +85,12 @@ sed -i '/RunFunctions/a source <(declare -f runParallel | sed "s/mpirun/mpirun \
 sed -i 's#/bin/sh#/bin/bash#g' Allrun
 sed -i '/decomposePar/a declare -f runParallel' Allrun
 
-export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --verbose"
+#export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts $(env | grep 'WM_\|FOAM' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x MPI_BUFFER_SIZE --report-bindings --map-by ppr:${ranks_per_numa}:numa"
+
+
+export FOAM_MPIRUN_FLAGS="-mca pml ucx $(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n -x PATH -x LD_LIBRARY_PATH"
+
+#export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --verbose"
 #export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --report-bindings --verbose"
 echo \$FOAM_MPIRUN_FLAGS
 
