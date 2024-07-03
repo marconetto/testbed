@@ -84,7 +84,8 @@ sed -i '/RunFunctions/a source <(declare -f runParallel | sed "s/mpirun/mpirun \
 
 sed -i 's#/bin/sh#/bin/bash#g' Allrun
 
-export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --report-bindings"
+export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --verbose"
+#export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --report-bindings --verbose"
 echo \$FOAM_MPIRUN_FLAGS
 
 ########################### APP EXECUTION #####################################
