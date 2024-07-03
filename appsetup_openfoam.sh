@@ -91,7 +91,7 @@ sed -i '/decomposePar/a declare -f runParallel' Allrun
 
 #export FOAM_MPIRUN_FLAGS="-mca pml ucx $(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n -x PATH -x LD_LIBRARY_PATH --oversubscribe"
 
-export FOAM_MPIRUN_FLAGS="-host 10.39.0.10:120,10.39.0.11:120 \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH"
+export FOAM_MPIRUN_FLAGS="-host 10.39.0.10:120,10.39.0.11:120 \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n"
 # export FOAM_MPIRUN_FLAGS="-hostfile hostfile"
 #export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --report-bindings --verbose"
 echo \$FOAM_MPIRUN_FLAGS
