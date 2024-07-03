@@ -80,7 +80,7 @@ export UCX_NET_DEVICES=mlx5_ib0:1
 export OMPI_MCA_pml=ucx
 
 # allow flags to be added to the mpirun command through FOAM_MPIRUN_FLAGS environment variable
-sed -i '/RunFunctions/a source <(declare -f runParallel | sed "s/mpirun/mpirun \\\\\$FOAM_MPIRUN_FLAGS/g")' Allrun
+sed -i '/RunFunctions/a source <(declare -f runParallel | sed "s/mpirun/mpirun \\\\\\\$FOAM_MPIRUN_FLAGS/g")' Allrun
 
 export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --report-bindings"
 echo \$FOAM_MPIRUN_FLAGS
