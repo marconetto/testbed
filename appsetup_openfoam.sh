@@ -79,11 +79,16 @@ export UCX_NET_DEVICES=mlx5_ib0:1
 #export OMP_NUM_THREADS=\$PPN
 export OMPI_MCA_pml=ucx
 
+# allow flags to be added to the mpirun command through FOAM_MPIRUN_FLAGS environment variable
+sed -i '/RunFunctions/a source <(declare -f runParallel | sed "s/mpirun/mpirun \\\$FOAM_MPIRUN_FLAGS/g")' Allrun
+
+export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts --report-bindings"
+echo \$FOAM_MPIRUN_FLAGS
 
 ########################### APP EXECUTION #####################################
 BLOCKMESH_DIMENSIONS="20 8 8" # 0.35M cells
 
-mpiopts="\$mpiopts -np \$NP --hostfile \$batch_hosts --report-bindings --oversubscribe"
+#mpiopts="\$mpiopts -np \$NP --hostfile \$batch_hosts --report-bindings --oversubscribe"
 
 #TASKS_PER_NODE=\$SLURM_NTASKS_PER_NODE
 NTASKS=\$NP
@@ -98,6 +103,7 @@ foamDictionary -entry "hierarchicalCoeffs/n" -set "( \$X \$Y \$Z )" system/decom
 
 foamDictionary -entry blocks -set "( hex ( 0 1 2 3 4 5 6 7 ) ( \$BLOCKMESH_DIMENSIONS ) simpleGrading ( 1 1 1 ) )" system/blockMeshDict
 
+cat Allrun
 time ./Allrun
 reconstructPar -constant
 #############################################################################
