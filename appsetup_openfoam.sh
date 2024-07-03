@@ -97,11 +97,9 @@ export FOAM_MPIRUN_FLAGS="-host 10.39.0.10:120,10.39.0.11:120 \$(env | grep 'WM_
 echo \$FOAM_MPIRUN_FLAGS
 
 ########################### APP EXECUTION #####################################
-BLOCKMESH_DIMENSIONS="20 8 8" # 0.35M cells
+BLOCKMESH_DIMENSIONS="40 16 16"
+#BLOCKMESH_DIMENSIONS="20 8 8" # 0.35M cells
 
-#mpiopts="\$mpiopts -np \$NP --hostfile \$batch_hosts --report-bindings --oversubscribe"
-
-#TASKS_PER_NODE=\$SLURM_NTASKS_PER_NODE
 NTASKS=\$NP
 
 X=\$((\$NTASKS / 4))
@@ -116,7 +114,6 @@ foamDictionary -entry blocks -set "( hex ( 0 1 2 3 4 5 6 7 ) ( \$BLOCKMESH_DIMEN
 
 cat Allrun
 time ./Allrun
-reconstructPar -constant
 #############################################################################
 
 
@@ -124,6 +121,7 @@ reconstructPar -constant
 LOGFILE="log.foamRun"
 if [[ -f \$LOGFILE && \$(tail -n 1 "\$LOGFILE") == 'Finalising parallel run' ]]; then
   echo "Simulation completed"
+  reconstructPar -constant
   touch case.foam
   exit 0
 else
