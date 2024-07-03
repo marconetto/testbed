@@ -83,7 +83,7 @@ export OMPI_MCA_pml=ucx
 ########################### APP EXECUTION #####################################
 BLOCKMESH_DIMENSIONS="20 8 8" # 0.35M cells
 
-mpiopts="\$mpiopts -np \$NP --hostfile \$batch_hosts --report-bindings"
+mpiopts="\$mpiopts -np \$NP --hostfile \$batch_hosts --report-bindings --oversubscribe"
 
 #TASKS_PER_NODE=\$SLURM_NTASKS_PER_NODE
 NTASKS=\$NP
