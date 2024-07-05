@@ -92,7 +92,8 @@ export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts \$(env | grep 'WM_\|FOAM_' | 
 echo \$FOAM_MPIRUN_FLAGS
 
 ########################### APP EXECUTION #####################################
-BLOCKMESH_DIMENSIONS="40 16 16"
+BLOCKMESH_DIMENSIONS="80 32 32"
+# BLOCKMESH_DIMENSIONS="40 16 16"
 #BLOCKMESH_DIMENSIONS="20 8 8" # 0.35M cells
 
 NTASKS=\$NP
