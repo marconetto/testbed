@@ -16,9 +16,8 @@ function generate_run_script {
   cat <<EOF >run_app.sh
 #!/bin/bash
 
-APP_EXE_PATH="\${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
-
-IFS=';' read -ra ADDR <<< "\$AZ_BATCH_NODE_LIST"
+cd \$AZ_TASKRUN_DIR
+echo "Execution directory: \$(pwd)"
 
 #source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
 source /cvmfs/software.eessi.io/versions/2023.06/init/bash
@@ -30,50 +29,17 @@ set
 which mpirun
 which simpleFoam
 
-echo "APP_EXE_PATH=\$APP_EXE_PATH"
-pwd
-cd \$APP_EXE_PATH
-pwd
-execdir="run_\$((RANDOM % 90000 + 10000))"
+cp -r "\$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike .
+chmod -R u+w .
 
-cp -r "\$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike \$execdir
-chmod -R u+w \$execdir
-cd \$execdir || exit
-echo "Execution directory: \$execdir"
 tree /mnt/batch/tasks/
 
 
-pwd
-
-#[[ -z \$PPN ]] && echo "PPN not defined"
-#PPN=\$PPN
-echo "PPN=\$PPN"
-
-
-
-
-# Create host file
-batch_hosts=hostfile
-rm -rf \$batch_hosts
-
-hostprocmap=""
-for host in "\${ADDR[@]}"; do
-    echo "\$host slots=\${PPN}" >> \$batch_hosts
-    hostprocmap="\$hostprocmap,\$host:\${PPN}"
-done
-
-echo "hostfile start"
-cat \$batch_hosts
-echo "hostfile end"
-
-#hostprocmap="\${hostprocmap:1}"
-
-#NODES=\$(cat \$batch_hosts | wc -l)
+echo "--- hostfile start --- "
+cat \$AZAZ_HOSTFILE_PATH
+echo "--- hostfile end --- "
 
 NP=\$((\$NODES*\$PPN))
-
-echo "NODES=\$NODES PPN=\$PPN"
-echo "hostprocmap=\$hostprocmap"
 
 echo "Running OpenFOAM with \$NP processes ..."
 export UCX_NET_DEVICES=mlx5_ib0:1
