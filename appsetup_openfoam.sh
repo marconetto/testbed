@@ -65,7 +65,7 @@ echo "hostfile end"
 
 #hostprocmap="\${hostprocmap:1}"
 
-NODES=\$(cat \$batch_hosts | wc -l)
+#NODES=\$(cat \$batch_hosts | wc -l)
 
 NP=\$((\$NODES*\$PPN))
 
@@ -88,7 +88,8 @@ sed -i '/bash/a set -x' Allrun
 
 #export FOAM_MPIRUN_FLAGS="-mca pml ucx $(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n -x PATH -x LD_LIBRARY_PATH --oversubscribe"
 
-export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n --report-bindings --verbose --map-by core --bind-to core "
+export FOAM_MPIRUN_FLAGS="--host \$AZ_HOST_LIST_PPN \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n --report-bindings --verbose --map-by core --bind-to core "
+#export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n --report-bindings --verbose --map-by core --bind-to core "
 echo \$FOAM_MPIRUN_FLAGS
 
 ########################### APP EXECUTION #####################################
