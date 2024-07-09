@@ -29,14 +29,14 @@ set
 which mpirun
 which simpleFoam
 
-cp -r "\$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike .
+cp -r "\$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike/* .
 chmod -R u+w .
 
 tree /mnt/batch/tasks/
 
 
 echo "--- hostfile start --- "
-cat \$AZAZ_HOSTFILE_PATH
+cat \$AZ_HOSTFILE_PATH
 echo "--- hostfile end --- "
 
 NP=\$((\$NODES*\$PPN))
