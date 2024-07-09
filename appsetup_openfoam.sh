@@ -39,6 +39,8 @@ cp -r "\$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike \$execdir
 chmod -R u+w \$execdir
 cd \$execdir || exit
 echo "Execution directory: \$execdir"
+tree /mnt/batch/tasks/
+
 
 pwd
 
