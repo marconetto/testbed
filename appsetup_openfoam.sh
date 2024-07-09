@@ -19,27 +19,15 @@ function generate_run_script {
 cd \$AZ_TASKRUN_DIR
 echo "Execution directory: \$(pwd)"
 
-#source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
 source /cvmfs/software.eessi.io/versions/2023.06/init/bash
 module load OpenFOAM
 source "\$FOAM_BASH"
 
-set -x
-set
 which mpirun
 which simpleFoam
 
-tree /mnt/batch/tasks/
-
 cp -r "\$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike/* .
-ls
 chmod -R u+w .
-
-
-
-echo "--- hostfile start --- "
-cat \$AZ_HOSTFILE_PATH
-echo "--- hostfile end --- "
 
 NP=\$((\$NODES*\$PPN))
 
@@ -57,10 +45,9 @@ sed -i 's#/bin/sh#/bin/bash#g' Allrun
 sed -i '/bash/a set -x' Allrun
 
 
-#export FOAM_MPIRUN_FLAGS="-mca pml ucx $(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n -x PATH -x LD_LIBRARY_PATH --oversubscribe"
+# export FOAM_MPIRUN_FLAGS="--host \$AZ_HOST_LIST_PPN \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n --report-bindings --verbose --map-by core --bind-to core "
 
-export FOAM_MPIRUN_FLAGS="--host \$AZ_HOST_LIST_PPN \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n --report-bindings --verbose --map-by core --bind-to core "
-#export FOAM_MPIRUN_FLAGS="--hostfile \$batch_hosts \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n --report-bindings --verbose --map-by core --bind-to core "
+export FOAM_MPIRUN_FLAGS="--hostfile \$AZ_HOSTFILE_PATH \$(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n --report-bindings --verbose --map-by core --bind-to core "
 echo \$FOAM_MPIRUN_FLAGS
 
 ########################### APP EXECUTION #####################################
