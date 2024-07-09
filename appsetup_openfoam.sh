@@ -29,10 +29,12 @@ set
 which mpirun
 which simpleFoam
 
+tree /mnt/batch/tasks/
+
 cp -r "\$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike/* .
+ls
 chmod -R u+w .
 
-tree /mnt/batch/tasks/
 
 
 echo "--- hostfile start --- "
