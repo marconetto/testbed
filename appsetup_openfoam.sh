@@ -26,6 +26,7 @@ module load OpenFOAM
 source "\$FOAM_BASH"
 
 set -x
+set
 which mpirun
 which simpleFoam
 
