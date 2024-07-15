@@ -28,6 +28,10 @@ which lmp
 
 cp ../in.lj.txt .
 
+NP=\$((\$NODES*\$PPN))
+export UCX_NET_DEVICES=mlx5_ib0:1
+
+
 time mpirun -np \$NP lmp -i in.lj.txt
 
 EOF
