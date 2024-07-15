@@ -40,7 +40,7 @@ sed -i "s/variable\s\+x\s\+index\s\+[0-9]\+/variable x index \$new_x/" \$input_f
 sed -i "s/variable\s\+y\s\+index\s\+[0-9]\+/variable y index \$new_y/" \$input_file
 sed -i "s/variable\s\+z\s\+index\s\+[0-9]\+/variable z index \$new_z/" \$input_file
 
-time mpirun -np \$NP lmp -i in.lj.txt
+time mpirun -np \$NP --host \$AZ_HOST_LIST_PPN  lmp -i in.lj.txt
 
 
 ###
