@@ -32,9 +32,9 @@ export UCX_NET_DEVICES=mlx5_ib0:1
 
 input_file="in.lj.txt"
 
-new_x=4
-new_y=4
-new_z=4
+new_x=6
+new_y=6
+new_z=6
 
 sed -i "s/variable\s\+x\s\+index\s\+[0-9]\+/variable x index \$new_x/" \$input_file
 sed -i "s/variable\s\+y\s\+index\s\+[0-9]\+/variable y index \$new_y/" \$input_file
