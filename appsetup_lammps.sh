@@ -23,7 +23,7 @@ echo "Execution directory: \$(pwd)"
 source /cvmfs/software.eessi.io/versions/2023.06/init/bash
 module load LAMMPS
 which mpirun
-which lmp
+APP=\$(which lmp)
 
 cp ../in.lj.txt .
 
@@ -40,7 +40,7 @@ sed -i "s/variable\s\+x\s\+index\s\+[0-9]\+/variable x index \$new_x/" \$input_f
 sed -i "s/variable\s\+y\s\+index\s\+[0-9]\+/variable y index \$new_y/" \$input_file
 sed -i "s/variable\s\+z\s\+index\s\+[0-9]\+/variable z index \$new_z/" \$input_file
 
-time mpirun -np \$NP --host \$AZ_HOST_LIST_PPN  lmp -i in.lj.txt
+time mpirun -np \$NP --host \$AZ_HOST_LIST_PPN  \$APP -i in.lj.txt
 
 
 ###
