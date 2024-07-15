@@ -18,6 +18,7 @@ function generate_run_script {
   cat <<EOF >run_app.sh
 #!/bin/bash
 
+set -x 
 cd \$AZ_TASKRUN_DIR
 echo "Execution directory: \$(pwd)"
 
