@@ -82,6 +82,7 @@ if [[ -f \$LOGFILE && \$(tail -n 1 "\$LOGFILE") == 'Finalising parallel run' ]];
   touch case.foam
   FOAMRUNCLOCKTIME=\$(cat log.foamRun | grep ClockTime | tail -n 1 | awk {'print \$7 '})
   echo "HPCADVISORVAR FOAMRUNCLOCKTIME=\$FOAMRUNCLOCKTIME"
+  echo "HPCADVISORVAR APPEXECTIME=\$FOAMRUNCLOCKTIME"
   exit 0
 else
   echo "Simulation failed"
