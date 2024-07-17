@@ -51,10 +51,10 @@ export FOAM_MPIRUN_FLAGS="--hostfile \$AZ_HOSTFILE_PATH \$(env | grep 'WM_\|FOAM
 echo \$FOAM_MPIRUN_FLAGS
 
 ########################### APP EXECUTION #####################################
-BLOCKMESH_DIMENSIONS="120 48 48"
+# BLOCKMESH_DIMENSIONS="120 48 48"
 #BLOCKMESH_DIMENSIONS="60 24 24"
 #BLOCKMESH_DIMENSIONS="80 32 32"
-# BLOCKMESH_DIMENSIONS="40 16 16"
+BLOCKMESH_DIMENSIONS="40 16 16"
 #BLOCKMESH_DIMENSIONS="20 8 8" # 0.35M cells
 
 NTASKS=\$NP
@@ -80,6 +80,8 @@ if [[ -f \$LOGFILE && \$(tail -n 1 "\$LOGFILE") == 'Finalising parallel run' ]];
   echo "Simulation completed"
 #  reconstructPar -constant
   touch case.foam
+  FOAMRUNCLOCKTIME=\$(cat log.foamRun | grep ClockTime | tail -n 1 | awk {'print \$7 '})
+  echo "HPCADVISORVAR FOAMRUNCLOCKTIME=\$FOAMRUNCLOCKTIME"
   exit 0
 else
   echo "Simulation failed"
