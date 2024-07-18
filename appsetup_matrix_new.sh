@@ -8,10 +8,11 @@ export MPI_EXE_PATH="${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
 
 source /etc/profile.d/modules.sh
 module load gcc-9.2.0
-module load mpi/hpcx
+module load mpi/openmpi
 
 main_setup() {
-  echo "main setup"
+  echo "main setup: $(pwd)"
+  echo "MPI_EXE_PATH: $MPI_EXE_PATH"
 
   set -x
 
@@ -25,15 +26,13 @@ main_setup() {
 }
 
 main_run() {
-  echo "main run $(pwd)"
+  echo "main run: $(pwd)"
   cp "../${MPI_EXE}" .
 
   [[ -z $APPINTERACTIONS ]] && APPINTERACTIONS=5
   [[ -z $APPMATRIXSIZE ]] && APPMATRIXSIZE=1000
 
   NP=$(($NODES * $PPN))
-  set
-  set -x
   APPEXECUTABLE=$(realpath ${MPI_EXE})
   mpirun -np $NP --host "$AZ_HOST_LIST_PPN" --map-by ppr:"${PPN}":node "$APPEXECUTABLE" "${APPMATRIXSIZE}" "${APPINTERACTIONS}"
 }
