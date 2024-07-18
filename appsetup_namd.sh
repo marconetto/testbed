@@ -24,8 +24,9 @@ hpcadvisor_setup() {
 hpcadvisor_run() {
   echo "main run $(pwd)"
 
-  namddir=NAMD_3.0b6_Linux-x86_64-verbs-smp
-  export PATH="$APP_EXE_PATH/$namddir:$PATH"
+  namddir="$(pwd)/../NAMD_3.0b6_Linux-x86_64-verbs-smp"
+  export PATH="$namddir:$PATH"
+  echo "$PATH"
 
   NP=$(($NODES * $PPN))
 
