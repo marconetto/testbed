@@ -25,8 +25,7 @@ main_setup() {
 }
 
 main_run() {
-  echo "main run"
-  cd "$AZ_TASKRUN_DIR" || exit
+  echo "main run $(pwd)"
   cp "../${MPI_EXE}" .
 
   [[ -z $APPINTERACTIONS ]] && APPINTERACTIONS=5
