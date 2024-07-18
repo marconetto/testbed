@@ -26,7 +26,8 @@ main_setup() {
 
 main_run() {
   echo "main run"
-  cp "$AZ_TASKRUN_DIR"/${MPI_EXE} .
+  cd "$AZ_TASKRUN_DIR" || exit
+  cp "../${MPI_EXE}" .
 
   [[ -z $APPINTERACTIONS ]] && APPINTERACTIONS=5
   [[ -z $APPMATRIXSIZE ]] && APPMATRIXSIZE=1000
