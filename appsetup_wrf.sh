@@ -40,9 +40,9 @@ hpcadvisor_run() {
   cat rsl.error.0000
   if [[ $(grep "SUCCESS COMPLETE WRF" rsl.error.0000) ]]; then
     echo "WRF run completed successfully"
-    exit 0
+    return 0
   else
     echo "WRF run failed"
-    exit 1
+    return 1
   fi
 }
