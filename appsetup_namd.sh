@@ -34,17 +34,11 @@ hpcadvisor_run() {
 
   IFS=';' read -ra ADDR <<<"$AZ_BATCH_NODE_LIST"
   batch_hosts=hosts.batch
-  rm -rf $batch_hosts
-
-  for host in "${ADDR[@]}"; do
-    echo "host $host ++cpus $PPN" >>$batch_hosts
-  done
+  printf "host %s ++cpus $PPN\n" "${ADDR[@]}" >"$batch_hosts"
 
   ########################### APP EXECUTION #####################################
   cp ../stmv/* .
-  # time charmrun "$APP_EXE" ++p $NP ++nodelist "$AZ_HOST_LIST_PPN" +setcpuaffinity stmv.namd
   time charmrun "$APP_EXE" ++p $NP ++nodelist $batch_hosts +setcpuaffinity stmv.namd
-  #############################################################################
 
   ########################### TEST OUTPUT #####################################
   OUTPUTFILE=stmv-output.coor
