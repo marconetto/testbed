@@ -13,7 +13,7 @@ hpcadvisor_setup() {
   tar -xf GROMACS_TestCaseA.tar.xz
 }
 
-hpadvisor_run() {
+hpcadvisor_run() {
   echo "main run $(pwd)"
 
   source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
