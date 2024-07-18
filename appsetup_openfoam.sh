@@ -20,8 +20,8 @@ hpcadvisor_run() {
   chmod -R u+w .
 
   NP=$(($NODES * $PPN))
+  echo "Running OpenFOAM with $NP processes..."
 
-  echo "Running OpenFOAM with $NP processes ..."
   export UCX_NET_DEVICES=mlx5_ib0:1
   export OMPI_MCA_pml=ucx
 
@@ -30,6 +30,7 @@ hpcadvisor_run() {
 
   sed -i 's#/bin/sh#/bin/bash#g' Allrun
   sed -i '/bash/a set -x' Allrun
+  sed -i '/source/a declare -f runParallel' Allrun
 
   export FOAM_MPIRUN_FLAGS="--hostfile $AZ_HOSTFILE_PATH $(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n --report-bindings --verbose --map-by core --bind-to core "
   echo "$FOAM_MPIRUN_FLAGS"
@@ -38,8 +39,9 @@ hpcadvisor_run() {
   # BLOCKMESH_DIMENSIONS="120 48 48"
   # BLOCKMESH_DIMENSIONS="60 24 24"
   # BLOCKMESH_DIMENSIONS="80 32 32"
-  BLOCKMESH_DIMENSIONS="40 16 16"
-  # BLOCKMESH_DIMENSIONS="20 8 8" # 0.35M cells
+  # BLOCKMESH_DIMENSIONS="20 8 8"
+
+  [ -z "$BLOCKMESH_DIMENSIONS" ] && BLOCKMESH_DIMENSIONS="40 16 16"
 
   X=$(($NP / 4))
   Y=2
@@ -50,7 +52,6 @@ hpcadvisor_run() {
   foamDictionary -entry blocks -set "( hex ( 0 1 2 3 4 5 6 7 ) ( $BLOCKMESH_DIMENSIONS ) simpleGrading ( 1 1 1 ) )" system/blockMeshDict
 
   cat Allrun
-  declare -f runParallel
   time ./Allrun
 
   ########################### TEST OUTPUT #####################################
