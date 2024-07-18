@@ -30,7 +30,6 @@ hpcadvisor_run() {
 
   sed -i 's#/bin/sh#/bin/bash#g' Allrun
   sed -i '/bash/a set -x' Allrun
-  sed -i '/source/a declare -f runParallel' Allrun
 
   export FOAM_MPIRUN_FLAGS="--hostfile $AZ_HOSTFILE_PATH $(env | grep 'WM_\|FOAM_' | cut -d'=' -f1 | sed 's/^/-x /g' | tr '\n' ' ') -x PATH -x LD_LIBRARY_PATH -x MPI_BUFFER_SIZE -x UCX_IB_MLX5_DEVX=n -x UCX_POSIX_USE_PROC_LINK=n --report-bindings --verbose --map-by core --bind-to core "
   echo "$FOAM_MPIRUN_FLAGS"
