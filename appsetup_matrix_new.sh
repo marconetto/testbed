@@ -34,5 +34,6 @@ main_run() {
   NP=$(($NODES * $PPN))
   set
   set -x
-  mpirun -np $NP --host "$AZ_HOST_LIST_PPN" --map-by ppr:"${PPN}":node /mnt/resource/batch/tasks/fsmounts/data//mpi_matrix_mult "${APPMATRIXSIZE}" "${APPINTERACTIONS}"
+  APPEXECUTABLE=$(realpath ${MPI_EXE})
+  mpirun -np $NP --host "$AZ_HOST_LIST_PPN" --map-by ppr:"${PPN}":node "$APPEXECUTABLE" "${APPMATRIXSIZE}" "${APPINTERACTIONS}"
 }
