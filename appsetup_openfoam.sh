@@ -50,6 +50,7 @@ hpcadvisor_run() {
   foamDictionary -entry blocks -set "( hex ( 0 1 2 3 4 5 6 7 ) ( $BLOCKMESH_DIMENSIONS ) simpleGrading ( 1 1 1 ) )" system/blockMeshDict
 
   cat Allrun
+  declare -f runParallel
   time ./Allrun
 
   ########################### TEST OUTPUT #####################################
