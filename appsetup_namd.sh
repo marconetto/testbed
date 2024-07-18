@@ -32,7 +32,7 @@ hpcadvisor_run() {
 
   APP_EXE=$(which namd3)
 
-  IFS=';' read -ra ADDR <<<"\$AZ_BATCH_NODE_LIST"
+  IFS=';' read -ra ADDR <<<"$AZ_BATCH_NODE_LIST"
   batch_hosts=hosts.batch
   rm -rf $batch_hosts
 
@@ -41,8 +41,7 @@ hpcadvisor_run() {
   done
 
   ########################### APP EXECUTION #####################################
-  cp "$APP_EXE_PATH"/stmv/* .
-  ls -l
+  cp ../stmv/* .
   # time charmrun "$APP_EXE" ++p $NP ++nodelist "$AZ_HOST_LIST_PPN" +setcpuaffinity stmv.namd
   time charmrun "$APP_EXE" ++p $NP ++nodelist $batch_hosts +setcpuaffinity stmv.namd
   #############################################################################
