@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 export MPI_EXE=mpi_matrix_mult
-export MPI_CODE=mpi_matrix_mult.c
-export MPI_EXE_PATH="${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
 
 [[ -f /etc/bashrc ]] && . /etc/bashrc
 
@@ -12,17 +10,20 @@ module load mpi/openmpi
 
 main_setup() {
   echo "main setup: $(pwd)"
-  echo "MPI_EXE_PATH: $MPI_EXE_PATH"
 
   set -x
 
   CODEURL=https://raw.githubusercontent.com/marconetto/testbed/main/mpi_matrix_mult.c
-  curl -sL $CODEURL -o "$MPI_EXE_PATH"/$MPI_CODE
+  MPI_CODE=$(basename $CODEURL)
+  curl -sL $CODEURL -o "$MPI_CODE"
 
-  which mpicc
+  mpicc -o ${MPI_EXE} "${MPI_CODE}"
+  if [[ $? -ne 0 ]]; then
+    echo "Compilation failed"
+    return 1
+  fi
+  return 1
 
-  mpicc -o ${MPI_EXE} ${MPI_CODE}
-  ls -l ${MPI_EXE}
 }
 
 main_run() {
