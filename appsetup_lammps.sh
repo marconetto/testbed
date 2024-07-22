@@ -47,6 +47,13 @@ hpcadvisor_run() {
 
   if grep -q "Total wall time:" "$log_file"; then
     echo "Simulation completed successfully."
+    LAMMPSCLOCKTIME=$(cat log.lammps | grep Loop | awk '{print $4}')
+    LAMMPSATOMS=$(cat log.lammps | grep Loop | '{print $12}')
+    LAMMPSSTEPS=$(cat log.lammps | grep Loop | '{print $9}')
+    echo "HPCADVISORVAR LAMMPSCLOCKTIME=$LAMMPSCLOCKTIME"
+    echo "HPCADVISORVAR APPEXECTIME=$LAMMPSCLOCKTIME"
+    echo "HPCADVISORVAR LAMMPSATOMS=$LAMMPSATOMS"
+    echo "HPCADVISORVAR LAMMPSSTEPS=$LAMMPSSTEPS"
     return 0
   else
     echo "Simulation did not complete successfully."
