@@ -43,8 +43,11 @@ hpcadvisor_run() {
   time ./Allrun
 
   ########################### TEST OUTPUT #####################################
+  ########################### TEST OUTPUT #####################################
   LOGFILE="log.foamRun"
-  if [[ -f $LOGFILE && $(tail -n 1 "$LOGFILE") == 'Finalising parallel run' ]]; then
+  LOGFILE2="log.snappyHexMesh"
+  if [[ -f $LOGFILE && $(tail -n 1 "$LOGFILE") == 'Finalising parallel run' ]] &&
+    [[ -f $LOGFILE2 && $(tail -n 1 "$LOGFILE2") == 'Finalising parallel run' ]]; then
     echo "Simulation completed"
     # reconstructPar -constant
     # touch case.foam
@@ -56,4 +59,5 @@ hpcadvisor_run() {
     echo "Simulation failed"
     return 1
   fi
+
 }
