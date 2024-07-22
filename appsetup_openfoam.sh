@@ -10,12 +10,12 @@ hpcadvisor_run() {
   echo "main run $(pwd)"
 
   source /cvmfs/software.eessi.io/versions/2023.06/init/bash
-  #module load OpenFOAM
-  module load OpenFOAM/10-foss-2023a
+  module load OpenFOAM
+  # module load OpenFOAM/10-foss-2023a
   source "$FOAM_BASH"
 
-  cp -r "$FOAM_TUTORIALS"/incompressible/simpleFoam/motorBike/* .
-  #cp -r "$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike/* .
+  # cp -r "$FOAM_TUTORIALS"/incompressible/simpleFoam/motorBike/* .
+  cp -r "$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike/* .
   chmod -R u+w .
 
   NP=$(($NODES * $PPN))
