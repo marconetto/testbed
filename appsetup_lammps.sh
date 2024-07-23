@@ -35,7 +35,7 @@ hpcadvisor_run() {
   NP=$(($NODES * $PPN))
   export UCX_NET_DEVICES=mlx5_ib0:1
 
-  BOXFACTOR=30
+  [ -z "$BOXFACTOR" ] && BOXFACTOR="30"
 
   sed -i "s/variable\s\+x\s\+index\s\+[0-9]\+/variable x index $BOXFACTOR/" $inputfile
   sed -i "s/variable\s\+y\s\+index\s\+[0-9]\+/variable y index $BOXFACTOR/" $inputfile
