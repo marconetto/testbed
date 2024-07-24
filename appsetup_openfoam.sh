@@ -68,6 +68,10 @@ hpcadvisor_run() {
   foamDictionary -entry numberOfSubdomains -set "$NP" system/decomposeParDict
   foamDictionary -entry "hierarchicalCoeffs/n" -set "( $X $Y $Z )" system/decomposeParDict
   foamDictionary -entry blocks -set "( hex ( 0 1 2 3 4 5 6 7 ) ( $BLOCKMESH_DIMENSIONS ) simpleGrading ( 1 1 1 ) )" system/blockMeshDict
+  foamDictionary \
+    -entry castellatedMeshControls.maxGlobalCells \
+    -set 200000000 \
+    system/snappyHexMeshDict
 
   time ./Allrun
 
