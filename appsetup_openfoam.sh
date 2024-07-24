@@ -76,7 +76,7 @@ hpcadvisor_run() {
     -set 2000000 \
     system/snappyHexMeshDict
 
-  foamDictionary -entry "castellatedMeshControls/refinementSurfaces/motorBike/level" -set "(7 8)" system/snappyHexMeshDict
+  foamDictionary -entry "castellatedMeshControls/refinementSurfaces/motorBike/level" -set "(5 7)" system/snappyHexMeshDict
 
   time ./Allrun
 
