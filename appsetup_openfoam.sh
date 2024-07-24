@@ -68,15 +68,15 @@ hpcadvisor_run() {
 
   foamDictionary \
     -entry "castellatedMeshControls/maxGlobalCells" \
-    -set 300000000 \
+    -set 30000000 \
     system/snappyHexMeshDict
 
   foamDictionary \
     -entry "castellatedMeshControls/maxLocalCells" \
-    -set 2000000 \
+    -set 200000 \
     system/snappyHexMeshDict
 
-  foamDictionary -entry "castellatedMeshControls/refinementSurfaces/motorBike/level" -set "(5 7)" system/snappyHexMeshDict
+  # foamDictionary -entry "castellatedMeshControls/refinementSurfaces/motorBike/level" -set "(5 7)" system/snappyHexMeshDict
 
   time ./Allrun
 
