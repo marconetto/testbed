@@ -11,6 +11,7 @@ hpcadvisor_run() {
 
   source /cvmfs/software.eessi.io/versions/2023.06/init/bash
   module load OpenFOAM
+  ls -l /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/software/OpenMPI/4.1.5-GCC-12.3.0/bin/orted
   # module load OpenFOAM/10-foss-2023a
   source "$FOAM_BASH"
 
