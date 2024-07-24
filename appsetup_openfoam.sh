@@ -42,10 +42,6 @@ hpcadvisor_run() {
   ########################### APP EXECUTION #####################################
   [ -z "$BLOCKMESH_DIMENSIONS" ] && BLOCKMESH_DIMENSIONS="20 8 8"
 
-  # X=$(($NP / 4))
-  # Y=2
-  # Z=2
-
   # Determine X,Y,Z based on total cores
   if [ "$(($PPN % 4))" == "0" ]; then
     X=$(($NP / 4))
@@ -63,6 +59,7 @@ hpcadvisor_run() {
     echo "Incompataible value of PPN: $PPN. Try something that is divisable by 4,6, or 9"
     return 1
   fi
+
   echo "X: $X, Y: $Y, Z: $Z"
 
   foamDictionary -entry numberOfSubdomains -set "$NP" system/decomposeParDict
@@ -78,6 +75,8 @@ hpcadvisor_run() {
     -entry "castellatedMeshControls/maxLocalCells" \
     -set 2000000 \
     system/snappyHexMeshDict
+
+  foamDictionary -entry "castellatedMeshControls/refinementSurfaces/motorBike/level" -set "(7 8)" system/snappyHexMeshDict
 
   time ./Allrun
 
