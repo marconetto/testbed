@@ -71,12 +71,12 @@ hpcadvisor_run() {
 
   foamDictionary \
     -entry "castellatedMeshControls/maxGlobalCells" \
-    -set 3000000 \
+    -set 300000000 \
     system/snappyHexMeshDict
 
   foamDictionary \
     -entry "castellatedMeshControls/maxLocalCells" \
-    -set 20000 \
+    -set 2000000 \
     system/snappyHexMeshDict
 
   time ./Allrun
@@ -91,7 +91,9 @@ hpcadvisor_run() {
     # reconstructPar -constant
     # touch case.foam
     FOAMRUNCLOCKTIME=$(cat log.foamRun | grep ClockTime | tail -n 1 | awk {'print $7 '})
+    FOAMMESHCELLS=$(cat log.snappyHexMesh | grep "Snapped mesh : cells:" | grep -o 'cells:[0-9]*' | sed 's/cells://')
     echo "HPCADVISORVAR FOAMRUNCLOCKTIME=$FOAMRUNCLOCKTIME"
+    echo "HPCADVISORVAR FOAMMESHCELLS=$FOAMMESHCELLS"
     echo "HPCADVISORVAR APPEXECTIME=$FOAMRUNCLOCKTIME"
     return 0
   else
