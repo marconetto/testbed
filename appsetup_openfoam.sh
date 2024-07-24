@@ -71,12 +71,12 @@ hpcadvisor_run() {
 
   foamDictionary \
     -entry castellatedMeshControls.maxGlobalCells \
-    -set 300000000 \
+    -set 3000000 \
     system/snappyHexMeshDict
 
   foamDictionary \
     -entry castellatedMeshControls.maxLocalCells \
-    -set 2000000 \
+    -set 20000 \
     system/snappyHexMeshDict
 
   time ./Allrun
