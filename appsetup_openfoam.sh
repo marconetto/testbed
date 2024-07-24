@@ -66,15 +66,15 @@ hpcadvisor_run() {
   foamDictionary -entry "hierarchicalCoeffs/n" -set "( $X $Y $Z )" system/decomposeParDict
   foamDictionary -entry blocks -set "( hex ( 0 1 2 3 4 5 6 7 ) ( $BLOCKMESH_DIMENSIONS ) simpleGrading ( 1 1 1 ) )" system/blockMeshDict
 
-  foamDictionary \
-    -entry "castellatedMeshControls/maxGlobalCells" \
-    -set 30000000 \
-    system/snappyHexMeshDict
-
-  foamDictionary \
-    -entry "castellatedMeshControls/maxLocalCells" \
-    -set 200000 \
-    system/snappyHexMeshDict
+  # foamDictionary \
+  #   -entry "castellatedMeshControls/maxGlobalCells" \
+  #   -set 30000000 \
+  #   system/snappyHexMeshDict
+  #
+  # foamDictionary \
+  #   -entry "castellatedMeshControls/maxLocalCells" \
+  #   -set 200000 \
+  #   system/snappyHexMeshDict
 
   # foamDictionary -entry "castellatedMeshControls/refinementSurfaces/motorBike/level" -set "(5 7)" system/snappyHexMeshDict
 
