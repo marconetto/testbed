@@ -16,11 +16,11 @@ hpcadvisor_run() {
   # module load OpenFOAM/10-foss-2023a
   source "$FOAM_BASH"
 
-  IFS=';' read -ra ADDR <<<"$AZ_BATCH_NODE_LIST"
-  for i in "${ADDR[@]}"; do
-    echo "ssh $i which orted"
-    ssh "$i" which orted
-  done
+  # IFS=';' read -ra ADDR <<<"$AZ_BATCH_NODE_LIST"
+  # for i in "${ADDR[@]}"; do
+  #   echo "ssh $i which orted"
+  #   ssh "$i" which orted
+  # done
 
   # cp -r "$FOAM_TUTORIALS"/incompressible/simpleFoam/motorBike/* .
   cp -r "$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike/* .
@@ -42,9 +42,28 @@ hpcadvisor_run() {
   ########################### APP EXECUTION #####################################
   [ -z "$BLOCKMESH_DIMENSIONS" ] && BLOCKMESH_DIMENSIONS="20 8 8"
 
-  X=$(($NP / 4))
-  Y=2
-  Z=2
+  # X=$(($NP / 4))
+  # Y=2
+  # Z=2
+
+  # Determine X,Y,Z based on total cores
+  if [ "$(($PPN % 4))" == "0" ]; then
+    X=$(($NP / 4))
+    Y=2
+    Z=2
+  elif [ "$(($PPN % 6))" == "0" ]; then
+    X=$(($NP / 6))
+    Y=3
+    Z=2
+  elif [ "$(($PPN % 9))" == "0" ]; then
+    X=$(($NP / 9))
+    Y=3
+    Z=3
+  else
+    echo "Incompataible value of PPN: $PPN. Try something that is divisable by 4,6, or 9"
+    return 1
+  fi
+  echo "X: $X, Y: $Y, Z: $Z"
 
   foamDictionary -entry numberOfSubdomains -set "$NP" system/decomposeParDict
   foamDictionary -entry "hierarchicalCoeffs/n" -set "( $X $Y $Z )" system/decomposeParDict
