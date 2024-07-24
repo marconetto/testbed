@@ -70,12 +70,12 @@ hpcadvisor_run() {
   foamDictionary -entry blocks -set "( hex ( 0 1 2 3 4 5 6 7 ) ( $BLOCKMESH_DIMENSIONS ) simpleGrading ( 1 1 1 ) )" system/blockMeshDict
 
   foamDictionary \
-    -entry castellatedMeshControls.maxGlobalCells \
+    -entry "castellatedMeshControls/maxGlobalCells" \
     -set 3000000 \
     system/snappyHexMeshDict
 
   foamDictionary \
-    -entry castellatedMeshControls.maxLocalCells \
+    -entry "castellatedMeshControls/maxLocalCells" \
     -set 20000 \
     system/snappyHexMeshDict
 
