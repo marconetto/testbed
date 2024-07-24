@@ -16,6 +16,12 @@ hpcadvisor_run() {
   # module load OpenFOAM/10-foss-2023a
   source "$FOAM_BASH"
 
+  IFS=';' read -ra ADDR <<<"$AZ_BATCH_NODE_LIST"
+  for i in "${ADDR[@]}"; do
+    echo "ssh $i which orted"
+    ssh "$i" which orted
+  done
+
   # cp -r "$FOAM_TUTORIALS"/incompressible/simpleFoam/motorBike/* .
   cp -r "$FOAM_TUTORIALS"/incompressibleFluid/motorBike/motorBike/* .
   chmod -R u+w .
