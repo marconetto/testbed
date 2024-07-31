@@ -12,15 +12,6 @@ hpcadvisor_setup() {
   wget https://www.lammps.org/inputs/in.lj.txt
 }
 
-APP_EXE_PATH="${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
-echo "APP_EXE_PATH=$APP_EXE_PATH"
-
-function setup_data {
-  echo "Downloading data for lammps"
-  wget https://www.lammps.org/inputs/in.lj.txt
-
-}
-
 hpcadvisor_run() {
   echo "main run $(pwd)"
 
@@ -32,7 +23,7 @@ hpcadvisor_run() {
   inputfile="in.lj.txt"
   cp ../$inputfile .
 
-  NP=$(($NODES * $PPN))
+  NP=$(($NNODES * $PPN))
   export UCX_NET_DEVICES=mlx5_ib0:1
 
   [ -z "$BOXFACTOR" ] && BOXFACTOR="30"
@@ -41,7 +32,7 @@ hpcadvisor_run() {
   sed -i "s/variable\s\+y\s\+index\s\+[0-9]\+/variable y index $BOXFACTOR/" $inputfile
   sed -i "s/variable\s\+z\s\+index\s\+[0-9]\+/variable z index $BOXFACTOR/" $inputfile
 
-  time mpirun -np $NP --host "$AZ_HOST_LIST_PPN" "$APP" -i $inputfile
+  time mpirun -np $NP --host "$HOSTLIST_PPN" "$APP" -i $inputfile
 
   log_file="log.lammps"
 
